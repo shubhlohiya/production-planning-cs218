@@ -41,13 +41,17 @@ int main(){
 
                         //calculate Overtime cost here for emin, imin
                         float Overtime;
-                        if (C*emin + imin - i - D[k] < 0)
-                            //!!!!!!!!!!!!!!!!!!!!insert Overtime cost formula here
+                        if (C*emin + imin - i - D[k] < 0) //imin = i + C*emin - D[k] + alpha (excess production reqd)
+                            Overtime = -(C*emin + imin - i - D[k]) * OTPrice; 
 
                         //Calculate Salary here
                         float Salary = S * emin;
                         
-                        minCost[k][i][e] = min(minCost[k][i][e], minCost[k][imin][emin] + HFcost + Overtime + Salary);
+                        //Storage cost to begin with imin inventory
+                        float Storage = W*imin; //or is it i 
+                        //!!!!!!!!!!!!!!!!! check
+                        
+                        minCost[k][i][e] = min(minCost[k][i][e], minCost[k+1][imin][emin] + HFcost + Overtime + Salary + Storage);
                     }
                 }
 
