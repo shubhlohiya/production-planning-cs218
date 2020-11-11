@@ -28,17 +28,17 @@ int main(){
                 
                 if(k==m && e<=E)
                 {
-                    minc[k][i][e] = hcost*(e-k); //base case: production cost for month m if we used k<=e employees in previous month
+                    minCost[k][i][e] = hcost*(e-k); //base case: production cost for month m if we used k<=e employees in previous month
                     //then we hire some employees to make number of employees equal to e
                 }
                 else if(k==m && e>E)
                 {
-                    minc[k][i][e] = fcost*(k-e); //base case: production cost for month m if we used k>e employees in previous month
+                    minCost[k][i][e] = fcost*(k-e); //base case: production cost for month m if we used k>e employees in previous month
                     //then we fire some employees to make number of employees equal to e
                 }
                 else
                 {
-                    minc[k][i][e] = DBL_MAX;
+                    minCost[k][i][e] = DBL_MAX;
                 }
 
             }
