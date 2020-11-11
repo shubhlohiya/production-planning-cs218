@@ -16,7 +16,7 @@ int main(){
     cin>>E>>Hcost>>Fcost>>S>>C>>OTC>>OTPrice>>W;
 
     int maxE = 0;
-    for (int i=0; i<m; i++) {
+    for (int i=0; i<m; i++) {          //loop to find max no. of employees in any monthe, useful for determining size of 3d array
         maxE = max(max(E, 1 + D[i]/C), maxE);
     }
 
