@@ -38,7 +38,7 @@ int main(){
                 }
                 else
                 {
-                    minCost[k][i][e] = DBL_MAX;
+                    minCost[k][i][e] = 1000000;
                 }
 
             }
