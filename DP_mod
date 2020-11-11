@@ -11,7 +11,7 @@ int main(){
         cin>>D[i];
         Cdemand += D[i];
     }
-    int E, C, OTC; float Hcost, Fcost, S, OTPrice, W;
+    int maxI, E, C, OTC; float Hcost, Fcost, S, OTPrice, W;
 
     cin>>E>>Hcost>>Fcost>>S>>C>>OTC>>OTPrice>>W;
 
@@ -28,12 +28,12 @@ int main(){
                 
                 if(k==m && e<=E)
                 {
-                    minCost[k][i][e] = hcost*(e-k); //base case: production cost for month m if we used k<=e employees in previous month
+                    minCost[k][i][e] = Hcost*(e-k); //base case: production cost for month m if we used k<=e employees in previous month
                     //then we hire some employees to make number of employees equal to e
                 }
                 else if(k==m && e>E)
                 {
-                    minCost[k][i][e] = fcost*(k-e); //base case: production cost for month m if we used k>e employees in previous month
+                    minCost[k][i][e] = Fcost*(k-e); //base case: production cost for month m if we used k>e employees in previous month
                     //then we fire some employees to make number of employees equal to e
                 }
                 else
