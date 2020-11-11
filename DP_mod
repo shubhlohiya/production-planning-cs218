@@ -11,13 +11,13 @@ int main(){
         cin>>D[i];
         Cdemand += D[i];
     }
-    int maxI, E, C, OTC; float Hcost, Fcost, S, OTPrice, W;
+    int E, C, OTC; float Hcost, Fcost, S, OTPrice, W;
 
     cin>>E>>Hcost>>Fcost>>S>>C>>OTC>>OTPrice>>W;
 
     int maxE = max(E, ((Cdemand%C)==0)?(Cdemand/C):(Cdemand/C + 1));
 
-    maxI = max(Cdemand, maxE*(C+OTC));
+    int maxI = max(Cdemand, maxE*(C+OTC));
 
     float minCost[m+1][maxI+1][maxE+1] = {0};
     
@@ -68,8 +68,7 @@ int main(){
                         float Salary = S * emin;
                         
                         //Storage cost to begin with imin inventory
-                        float Storage = W * i; //or is it i 
-                        //!!!!!!!!!!!!!!!!! check
+                        float Storage = W * i; // 
                         
                         minCost[k][i][e] = min(minCost[k][i][e], minCost[k+1][imin][emin] + HFcost + Overtime + Salary + Storage);
                     }
