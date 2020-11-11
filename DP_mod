@@ -7,7 +7,7 @@ int main(){
     cin>>m;
 
     int D[m], Cdemand = 0;
-    for (int i=0; i<m; i++) {       //loop for calculating cumulative demand, useful in defining upper bounds of storage 
+    for (int i=0; i<m; i++) {
         cin>>D[i];
         Cdemand += D[i];
     }
@@ -15,52 +15,60 @@ int main(){
 
     cin>>E>>Hcost>>Fcost>>S>>C>>OTC>>OTPrice>>W;
 
-    int maxE = 0;
-    for (int i=0; i<m; i++) {          //loop to find max no. of employees in any month, useful for determining size of 3d array
-        maxE = max(max(E, 1 + D[i]/C), maxE);
-    }
+    int maxE = max(E, ((Cdemand%C)==0)?(Cdemand/C):(Cdemand/C + 1));
 
-    float minCost[m+1][Cdemand+1][maxE+1] = {100000};
+    maxI = max(Cdemand, maxE*(C+OTC));
+
+    float minCost[m+1][maxI+1][maxE+1] = {0};
     
     
-    for (int k = m; m>=0; m--){
-        for(int e = 0; e<=maxE; e++){
-            for(int i = 0; i<=Cdemand; i++){
-                minCost[k][i][e] = 100000;
+    for (int k = 0; k<m+1; k++){
+        for(int i = 0; i<=maxI; i++){
+            for(int e = 0; e<=maxE; e++){
                 
-                // cout<<minCost[k][i][e]<<endl;
+                if(k==m && e<=E)
+                {
+                    minc[k][i][e] = hcost*(e-k); //base case: production cost for month m if we used k<=e employees in previous month
+                    //then we hire some employees to make number of employees equal to e
+                }
+                else if(k==m && e>E)
+                {
+                    minc[k][i][e] = fcost*(k-e); //base case: production cost for month m if we used k>e employees in previous month
+                    //then we fire some employees to make number of employees equal to e
+                }
+                else
+                {
+                    minc[k][i][e] = DBL_MAX;
+                }
+
             }
         }
     }
 
     for (int k = m-1; m>=0; m--){
-        for(int e = 0; e<=maxE; e++){
-            for(int i = 0; i<=Cdemand; i++){
-
-                minCost[k][i][e] = minCost[k+1][i][e]; //just for initialization purposes, since 0 will be incorrect
-                //loop for minimum on minCost[k+1][imin][emin], i.e. the following months
-                cout<<minCost[k][i][e]<<endl;
+        for(int i = 0; i<=maxI; i++){
+            for(int e = 0; e<=maxE; e++){
                 
-                for(int emin = 0; emin<=maxE; emin++){
-                    for(int imin = 0; imin<=Cdemand; imin++){
+                for(int imin = 0; imin<=maxI; imin++){
+                    for(int emin = 0; emin<=maxE; emin++){
                         
                         //calculate HFcost - Hiring/Firing Costs
                         float HFcost;
-                        if (emin>e) // we fire
+                        if (emin>=e) // we fire
                             HFcost = Fcost*(emin - e);
                         else //we hire
                             HFcost = Hcost*(e - emin);
 
                         //calculate Overtime cost here for emin, imin
                         float Overtime;
-                        if ((C*emin) + imin - i - D[k] < 0) //imin = i + C*emin - D[k] + alpha (excess production reqd)
-                            Overtime = -((C*emin) + imin - i - D[k]) * OTPrice; 
+                        if ( ( -(C*emin) + imin - i + D[k] ) > 0) 
+                            Overtime = (-(C*emin) + imin - i + D[k]) * OTPrice; 
 
                         //Calculate Salary here
                         float Salary = S * emin;
                         
                         //Storage cost to begin with imin inventory
-                        float Storage = W * imin; //or is it i 
+                        float Storage = W * i; //or is it i 
                         //!!!!!!!!!!!!!!!!! check
                         
                         minCost[k][i][e] = min(minCost[k][i][e], minCost[k+1][imin][emin] + HFcost + Overtime + Salary + Storage);
@@ -75,7 +83,7 @@ int main(){
     //We can stop the loop, but currently let's keep it for simplicity
 
 
-    cout<<"Min Cost: "<<minCost[0][0][0];
+    cout<<"Min Cost: "<<minCost[0][0][E];
 
     return 0;
 }
