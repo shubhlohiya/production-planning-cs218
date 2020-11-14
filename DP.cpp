@@ -45,7 +45,7 @@ ll getcost(int M, int D[], int E, ll Hcost, ll Fcost,
 					for(int k_next=0; k_next<=e_max; k_next++){
 						//required overtime carpets in month i
 						int o = D[i] - (j-j_next + C*k_next);
-						if(o<0 || o > k_next*OTC)
+						if(o<0 || o > k_next*OTC) // invalid
 							continue;
 						// hiring, firing, overtime, salary and inventory 
 						// storage costs for month i
@@ -79,8 +79,8 @@ ll getcost(int M, int D[], int E, ll Hcost, ll Fcost,
 
 	// Time Analysis:
 	// Clearly filling the DP table is the most expensive operation and will
-	// determine the total time complexity
-	// Total entries we update: (M-1)*(e_max)*(inventory_max)
+	// dominate the time complexity
+	// Total entries we update: (M)*(e_max+1)*(inventory_max+1)+1
 	// Time to update each entry: (e_max)*(inventory_max)
 	// as we are minimizing over all possible combinations from month i+1
 	// Time complexity of the Algorithm: O(M*(e_max^2)*(inventory_max^2))
